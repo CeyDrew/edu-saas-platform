@@ -22,3 +22,10 @@ export function formatDate(iso: string | null | undefined): string {
 }
 
 export const statusLabel = { draft: "Taslak", published: "Yayında", archived: "Arşiv" } as const;
+
+const axisCurrency = new Intl.NumberFormat("tr-TR", { style: "currency", currency: "TRY", maximumFractionDigits: 0 });
+
+/** Axis ticks: whole liras, and "₺0" rather than "Ücretsiz" for zero. */
+export function formatMoneyAxis(kurus: number): string {
+  return axisCurrency.format(kurus / 100);
+}

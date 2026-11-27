@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
             CatalogSeeder::class,
             SalesSeeder::class,
             LearningSeeder::class,
+            AiDemoSeeder::class,
         ]);
     }
 }

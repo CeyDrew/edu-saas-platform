@@ -12,10 +12,12 @@ setup:
 	docker compose exec php composer install
 	docker compose exec php php artisan key:generate
 	docker compose exec php php artisan migrate:fresh --seed
+	docker compose exec php php artisan cache:clear
 	docker compose exec php php artisan storage:link
 
 seed:
 	docker compose exec php php artisan migrate:fresh --seed
+	docker compose exec php php artisan cache:clear
 
 test:
 	docker compose exec php ./vendor/bin/pest

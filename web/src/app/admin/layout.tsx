@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { Building2 } from "lucide-react";
+import { BarChart3, Building2 } from "lucide-react";
 import { PanelShell } from "@/components/panel/panel-shell";
 
 export default function PlatformAdminLayout({ children }: { children: React.ReactNode }) {
@@ -14,7 +14,10 @@ export default function PlatformAdminLayout({ children }: { children: React.Reac
       title="Platform"
       roles={["platform-admin"]}
       loginPath="/admin/giris"
-      nav={[{ href: "/admin", label: "Markalar", icon: Building2, exact: true }]}
+      nav={[
+        { href: "/admin", label: "Markalar", icon: Building2, exact: true },
+        { href: "/admin/raporlar", label: "Raporlar", icon: BarChart3 },
+      ]}
     >
       {children}
     </PanelShell>

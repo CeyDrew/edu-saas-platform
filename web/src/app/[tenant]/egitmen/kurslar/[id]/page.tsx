@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
-import { ExternalLink, FileText, ImageUp, Plus, Trash2, Upload, Video } from "lucide-react";
+import { BarChart3, ExternalLink, FileText, ImageUp, Plus, Trash2, Upload, Video } from "lucide-react";
 import { PageHeader } from "@/components/panel/panel-shell";
 import { QuestionsDialog } from "@/components/panel/questions-dialog";
 import { Badge } from "@/components/ui/badge";
@@ -57,6 +57,11 @@ export default function EditCourse() {
         description={`Durum: ${statusLabel[course.status]}`}
         action={
           <div className="flex gap-2">
+            <Link href={`/egitmen/kurslar/${course.id}/rapor`}>
+              <Button variant="outline">
+                <BarChart3 /> Rapor
+              </Button>
+            </Link>
             {published && (
               <Link href={`/kurslar/${course.slug}`} target="_blank">
                 <Button variant="outline">

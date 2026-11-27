@@ -7,8 +7,10 @@ use App\Domain\Identity\Role;
 use App\Domain\Learning\Models\Enrollment;
 use App\Domain\Sales\Enums\OrderStatus;
 use App\Domain\Sales\Enums\OrderType;
+use App\Domain\Sales\Enums\SubscriptionStatus;
 use App\Domain\Sales\Models\Coupon;
 use App\Domain\Sales\Models\Order;
+use App\Domain\Sales\Models\Subscription;
 use App\Domain\Sales\Models\SubscriptionPlan;
 use App\Domain\Tenancy\Models\Tenant;
 use App\Domain\Tenancy\TenantContext;
@@ -40,13 +42,34 @@ class SalesSeeder extends Seeder
                 Coupon::query()->create(['code' => 'YUZTL', 'type' => 'fixed', 'value' => 10000, 'min_amount' => 30000, 'max_uses' => 50]);
 
                 $this->orders($tenant);
+                $this->subscriptions();
             });
         });
     }
 
+    /**
+     * A handful of subscribers, one of them with a card that keeps failing so the
+     * retry and suspension flow can be seen with `subscriptions:renew`.
+     */
+    private function subscriptions(): void
+    {
+        $plan = SubscriptionPlan::query()->firstOrFail();
+        $students = User::query()->role(Role::Student->value)->where('email', 'not like', 'ogrenci@%')->orderBy('id')->take(4)->get();
+
+        foreach ($students as $i => $student) {
+            Subscription::query()->create([
+                'user_id' => $student->id,
+                'plan_id' => $plan->id,
+                'status' => SubscriptionStatus::Active,
+                'current_period_end' => $i === 3 ? now()->subHour() : now()->addDays(mt_rand(3, 28)),
+                'card_token' => $i === 3 ? 'card_fail_demo' : 'card_demo_'.$student->id,
+            ]);
+        }
+    }
+
     private function orders(Tenant $tenant): void
     {
-        $courses = Course::query()->where('price', '>', 0)->get();
+        $courses = Course::query()->where('price', '>', 0)->orderBy('id')->get();
         $students = User::query()->role(Role::Student->value)->get();
 
         foreach ($students as $i => $student) {

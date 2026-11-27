@@ -9,7 +9,7 @@ export default function BrandAdminLayout({ children }: { children: React.ReactNo
       title="Marka yönetimi"
       roles={["brand-admin"]}
       nav={[
-        { href: "/yonetim", label: "Genel bakış", icon: BarChart3, exact: true },
+        { href: "/yonetim", label: "Satış analitiği", icon: BarChart3, exact: true },
         { href: "/yonetim/uyeler", label: "Üyeler", icon: Users },
         { href: "/egitmen", label: "Kurslar", icon: BookOpen },
         { href: "/yonetim/satislar", label: "Siparişler", icon: Receipt },
