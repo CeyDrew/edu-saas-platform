@@ -7,6 +7,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { ExternalLink, FileText, ImageUp, Plus, Trash2, Upload, Video } from "lucide-react";
 import { PageHeader } from "@/components/panel/panel-shell";
+import { QuestionsDialog } from "@/components/panel/questions-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -153,6 +154,7 @@ function LessonRow({ lesson, mutate }: { lesson: Lesson; mutate: Mutate }) {
           />
         </label>
       )}
+      <QuestionsDialog lesson={lesson} />
       <Button
         variant="ghost"
         size="icon-xs"

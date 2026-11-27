@@ -87,3 +87,15 @@ export type MyCourse = {
   course: Course;
   progress?: { completed_lessons: number; percent: number; next_lesson_id: number | null };
 };
+
+export type Question = {
+  id: number;
+  lesson_id: number;
+  stem: string;
+  options: string[];
+  video_timestamp: number | null;
+  correct_index?: number;
+  explanation?: string | null;
+  source?: "manual" | "ai";
+  status?: "draft" | "approved" | "rejected";
+};
