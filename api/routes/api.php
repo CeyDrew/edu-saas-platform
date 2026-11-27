@@ -16,6 +16,7 @@ use App\Http\Controllers\Api\Manage\LessonController;
 use App\Http\Controllers\Api\Manage\QuestionController;
 use App\Http\Controllers\Api\Manage\SectionController;
 use App\Http\Controllers\Api\Platform\TenantController;
+use App\Http\Controllers\Api\ReportController;
 use App\Http\Controllers\Api\Sales\AccountController;
 use App\Http\Controllers\Api\Sales\CheckoutController;
 use App\Http\Controllers\Api\Sales\PaymentController;
@@ -72,6 +73,7 @@ Route::middleware('tenant')->group(function () {
             Route::get('/members', [MemberController::class, 'index']);
             Route::post('/members', [MemberController::class, 'store']);
             Route::get('/orders', [SalesController::class, 'orders']);
+            Route::get('/reports/sales', [ReportController::class, 'brandSales']);
             Route::get('/coupons', [SalesController::class, 'coupons']);
             Route::post('/coupons', [SalesController::class, 'storeCoupon']);
             Route::patch('/coupons/{coupon}', [SalesController::class, 'updateCoupon']);
@@ -87,6 +89,7 @@ Route::middleware('tenant')->group(function () {
             Route::post('/courses/{course:id}/publish', [ManageCourseController::class, 'publish']);
             Route::post('/courses/{course:id}/unpublish', [ManageCourseController::class, 'unpublish']);
             Route::post('/courses/{course:id}/cover', [ManageCourseController::class, 'cover']);
+            Route::get('/courses/{course:id}/report', [ReportController::class, 'courseStudents']);
 
             Route::post('/courses/{course:id}/sections', [SectionController::class, 'store']);
             Route::put('/courses/{course:id}/sections/order', [SectionController::class, 'reorder']);
@@ -120,6 +123,7 @@ Route::post('/payments/iyzico/callback', [PaymentController::class, 'iyzicoCallb
 // Platform owner endpoints; only reachable without a brand context.
 Route::middleware(['auth:sanctum', 'platform'])->prefix('platform')->group(function () {
     Route::get('/tenants', [TenantController::class, 'index']);
+    Route::get('/reports', [ReportController::class, 'platform']);
     Route::post('/tenants', [TenantController::class, 'store']);
     Route::patch('/tenants/{tenant}', [TenantController::class, 'update']);
 });
