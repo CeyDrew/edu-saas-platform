@@ -75,16 +75,17 @@ jobs:
       COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ secrets.GITHUB_TOKEN }}"}}'
     steps:
       - uses: actions/checkout@v4
-      - name: Start the stack (installs, migrates and seeds on first start)
-        run: docker compose up -d --build --wait --wait-timeout 1200
       - uses: actions/setup-node@v4
         with:
           node-version: "24"
           cache: npm
           cache-dependency-path: web/package-lock.json
+      # Before the stack starts, so web/node_modules belongs to the runner, not to Docker.
       - name: Install Playwright
         working-directory: web
         run: npm ci && npx playwright install --with-deps chromium
+      - name: Start the stack (installs, migrates and seeds on first start)
+        run: docker compose up -d --build --wait --wait-timeout 1200
       - name: Run Playwright
         working-directory: web
         run: npx playwright test
