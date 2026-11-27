@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\Brand\MemberController;
+use App\Http\Controllers\Api\BrandDirectoryController;
 use App\Http\Controllers\Api\Catalog\CourseController as CatalogCourseController;
 use App\Http\Controllers\Api\CurrentTenantController;
 use App\Http\Controllers\Api\Manage\CourseController as ManageCourseController;
@@ -59,6 +60,8 @@ Route::middleware('tenant')->group(function () {
         });
     });
 });
+
+Route::get('/brands', BrandDirectoryController::class)->middleware('platform');
 
 // Platform owner endpoints; only reachable without a brand context.
 Route::middleware(['auth:sanctum', 'platform'])->prefix('platform')->group(function () {

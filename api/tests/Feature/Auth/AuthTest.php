@@ -6,7 +6,7 @@ use App\Domain\Tenancy\Models\Tenant;
 beforeEach(function () {
     $this->brand = Tenant::factory()->create(['slug' => 'kodakademi']);
     $this->other = Tenant::factory()->create(['slug' => 'dilokulu']);
-    $this->spa = ['Referer' => 'http://kodakademi.localhost:3000/giris', 'X-Tenant' => 'kodakademi'];
+    $this->spa = ['Referer' => 'http://kodakademi.localhost:3300/giris', 'X-Tenant' => 'kodakademi'];
 });
 
 it('registers a student in the current brand and starts a session', function () {
@@ -62,7 +62,7 @@ it('does not let a user of another brand log in', function () {
 it('only lets platform users log in without a brand', function () {
     userWithRole(Role::BrandAdmin, $this->brand, ['email' => 'yonetici@example.com']);
     userWithRole(Role::PlatformAdmin, null, ['email' => 'admin@example.com']);
-    $platformSpa = ['Referer' => 'http://localhost:3000/'];
+    $platformSpa = ['Referer' => 'http://localhost:3300/'];
 
     $this->postJson('/api/auth/login', ['email' => 'yonetici@example.com', 'password' => 'password'], $platformSpa)
         ->assertJsonValidationErrors('email');

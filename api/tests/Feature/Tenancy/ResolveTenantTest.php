@@ -19,7 +19,7 @@ it('resolves the tenant from the subdomain', function () {
 });
 
 it('resolves the tenant from the SPA origin', function () {
-    $this->getJson('/api/tenant', ['Origin' => 'http://kodakademi.localhost:3000'])
+    $this->getJson('/api/tenant', ['Origin' => 'http://kodakademi.localhost:3300'])
         ->assertOk()
         ->assertJsonPath('data.slug', 'kodakademi');
 });
