@@ -1,0 +1,2299 @@
+openapi: 3.0.3
+info:
+  title: 'Edu SaaS API'
+  description: 'Çok kiracılı eğitim platformunun REST API’si: katalog, satış, öğrenme, yapay zekâ ve raporlama.'
+  version: 1.0.0
+servers:
+  -
+    url: 'http://localhost:8000'
+tags:
+  -
+    name: Endpoints
+    description: ''
+components:
+  securitySchemes:
+    default:
+      type: http
+      scheme: bearer
+      description: 'You can retrieve your token by visiting your dashboard and clicking <b>Generate API token</b>.'
+security:
+  -
+    default: []
+paths:
+  /api/auth/login:
+    post:
+      summary: ''
+      operationId: postApiAuthLogin
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'Must be a valid email address.'
+                  example: gbailey@example.net
+                password:
+                  type: string
+                  description: ''
+                  example: '|]|{+-'
+                device_name:
+                  type: string
+                  description: 'Must not be greater than 100 characters.'
+                  example: v
+              required:
+                - email
+                - password
+      security: []
+  /api/auth/token:
+    post:
+      summary: 'Issue a personal access token for non-browser clients.'
+      operationId: issueAPersonalAccessTokenForNonBrowserClients
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'Must be a valid email address.'
+                  example: gbailey@example.net
+                password:
+                  type: string
+                  description: ''
+                  example: '|]|{+-'
+                device_name:
+                  type: string
+                  description: 'Must not be greater than 100 characters.'
+                  example: v
+              required:
+                - email
+                - password
+      security: []
+  /api/auth/register:
+    post:
+      summary: ''
+      operationId: postApiAuthRegister
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'Must not be greater than 120 characters.'
+                  example: b
+                email:
+                  type: string
+                  description: 'Must be a valid email address. Must not be greater than 190 characters.'
+                  example: zbailey@example.net
+                phone:
+                  type: string
+                  description: ''
+                  example: null
+                  nullable: true
+                password:
+                  type: string
+                  description: ''
+                  example: architecto
+              required:
+                - name
+                - email
+                - password
+      security: []
+  /api/auth/me:
+    get:
+      summary: ''
+      operationId: getApiAuthMe
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      security: []
+  /api/auth/logout:
+    post:
+      summary: ''
+      operationId: postApiAuthLogout
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      security: []
+  /api/tenant:
+    get:
+      summary: ''
+      operationId: getApiTenant
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      security: []
+  /api/courses:
+    get:
+      summary: ''
+      operationId: getApiCourses
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                q:
+                  type: string
+                  description: 'Must not be greater than 100 characters.'
+                  example: b
+                  nullable: true
+                category:
+                  type: string
+                  description: 'Must not be greater than 60 characters.'
+                  example: 'n'
+                  nullable: true
+                level:
+                  type: string
+                  description: 'Must not be greater than 20 characters.'
+                  example: gzmiyvdljnikhway
+                  nullable: true
+                per_page:
+                  type: integer
+                  description: 'Must be between 1 and 48.'
+                  example: 1
+                  nullable: true
+      security: []
+  '/api/courses/{slug}':
+    get:
+      summary: ''
+      operationId: getApiCoursesSlug
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: slug
+        description: 'The slug of the course.'
+        example: sifirdan-php-ve-laravel
+        required: true
+        schema:
+          type: string
+  /api/categories:
+    get:
+      summary: 'Categories with at least one published course, for storefront filters.'
+      operationId: categoriesWithAtLeastOnePublishedCourseForStorefrontFilters
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      security: []
+  /api/plans:
+    get:
+      summary: ''
+      operationId: getApiPlans
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      security: []
+  /api/checkout/quote:
+    post:
+      summary: ''
+      operationId: postApiCheckoutQuote
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                course:
+                  type: string
+                  description: 'This field is required when <code>plan_id</code> is not present.'
+                  example: architecto
+                  nullable: true
+                plan_id:
+                  type: integer
+                  description: 'This field is required when <code>course</code> is not present.'
+                  example: 16
+                  nullable: true
+                coupon:
+                  type: string
+                  description: 'Must not be greater than 40 characters.'
+                  example: 'n'
+                  nullable: true
+                billing:
+                  type: object
+                  description: ''
+                  example: null
+                  properties:
+                    type:
+                      type: string
+                      description: ''
+                      example: corporate
+                      enum:
+                        - individual
+                        - corporate
+                      nullable: true
+                    name:
+                      type: string
+                      description: 'This field is required when <code>billing.type</code> is <code>individual</code>. Must not be greater than 120 characters.'
+                      example: g
+                      nullable: true
+                    tckn:
+                      type: string
+                      description: 'This field is required when <code>billing.type</code> is <code>individual</code>.'
+                      example: null
+                      nullable: true
+                    company:
+                      type: string
+                      description: 'This field is required when <code>billing.type</code> is <code>corporate</code>. Must not be greater than 200 characters.'
+                      example: z
+                      nullable: true
+                    vkn:
+                      type: string
+                      description: 'This field is required when <code>billing.type</code> is <code>corporate</code>.'
+                      example: null
+                      nullable: true
+                    tax_office:
+                      type: string
+                      description: 'This field is required when <code>billing.type</code> is <code>corporate</code>. Must not be greater than 100 characters.'
+                      example: m
+                      nullable: true
+                    address:
+                      type: string
+                      description: 'Must not be greater than 300 characters.'
+                      example: i
+                      nullable: true
+                    city:
+                      type: string
+                      description: 'Must not be greater than 60 characters.'
+                      example: 'y'
+                      nullable: true
+                  nullable: true
+      security: []
+  /api/checkout:
+    post:
+      summary: ''
+      operationId: postApiCheckout
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                course:
+                  type: string
+                  description: 'This field is required when <code>plan_id</code> is not present.'
+                  example: architecto
+                  nullable: true
+                plan_id:
+                  type: integer
+                  description: 'This field is required when <code>course</code> is not present.'
+                  example: 16
+                  nullable: true
+                coupon:
+                  type: string
+                  description: 'Must not be greater than 40 characters.'
+                  example: 'n'
+                  nullable: true
+                billing:
+                  type: object
+                  description: ''
+                  example: []
+                  properties:
+                    type:
+                      type: string
+                      description: ''
+                      example: corporate
+                      enum:
+                        - individual
+                        - corporate
+                    name:
+                      type: string
+                      description: 'This field is required when <code>billing.type</code> is <code>individual</code>. Must not be greater than 120 characters.'
+                      example: b
+                      nullable: true
+                    tckn:
+                      type: string
+                      description: 'This field is required when <code>billing.type</code> is <code>individual</code>.'
+                      example: null
+                      nullable: true
+                    company:
+                      type: string
+                      description: 'This field is required when <code>billing.type</code> is <code>corporate</code>. Must not be greater than 200 characters.'
+                      example: 'n'
+                      nullable: true
+                    vkn:
+                      type: string
+                      description: 'This field is required when <code>billing.type</code> is <code>corporate</code>.'
+                      example: null
+                      nullable: true
+                    tax_office:
+                      type: string
+                      description: 'This field is required when <code>billing.type</code> is <code>corporate</code>. Must not be greater than 100 characters.'
+                      example: g
+                      nullable: true
+                    address:
+                      type: string
+                      description: 'Must not be greater than 300 characters.'
+                      example: z
+                    city:
+                      type: string
+                      description: 'Must not be greater than 60 characters.'
+                      example: m
+                  required:
+                    - type
+                    - address
+                    - city
+              required:
+                - billing
+      security: []
+  /api/payments/fake/complete:
+    post:
+      summary: "The local payment page: records the outcome and sends the signed notification\nthrough the same webhook path a real provider would use."
+      operationId: theLocalPaymentPageRecordsTheOutcomeAndSendsTheSignedNotificationThroughTheSameWebhookPathARealProviderWouldUse
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                  description: ''
+                  example: architecto
+                success:
+                  type: boolean
+                  description: ''
+                  example: true
+              required:
+                - token
+                - success
+      security: []
+  /api/me/courses:
+    get:
+      summary: ''
+      operationId: getApiMeCourses
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      security: []
+  /api/me/orders:
+    get:
+      summary: ''
+      operationId: getApiMeOrders
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      security: []
+  '/api/me/orders/{order_number}':
+    get:
+      summary: ''
+      operationId: getApiMeOrdersOrder_number
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: order_number
+        description: ''
+        example: S261016EGXZ2V5F
+        required: true
+        schema:
+          type: string
+  /api/me/subscription:
+    get:
+      summary: ''
+      operationId: getApiMeSubscription
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      security: []
+  /api/me/subscription/cancel:
+    post:
+      summary: ''
+      operationId: postApiMeSubscriptionCancel
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      security: []
+  '/api/learn/courses/{course_slug}':
+    get:
+      summary: ''
+      operationId: getApiLearnCoursesCourse_slug
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: course_slug
+        description: 'The slug of the course.'
+        example: sifirdan-php-ve-laravel
+        required: true
+        schema:
+          type: string
+  '/api/learn/lessons/{lesson_id}':
+    get:
+      summary: ''
+      operationId: getApiLearnLessonsLesson_id
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: lesson_id
+        description: 'The ID of the lesson.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  '/api/learn/lessons/{lesson_id}/progress':
+    post:
+      summary: ''
+      operationId: postApiLearnLessonsLesson_idProgress
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                position:
+                  type: integer
+                  description: 'Must be at least 0.'
+                  example: 27
+                elapsed:
+                  type: integer
+                  description: 'Must be at least 0. Must not be greater than 600.'
+                  example: 22
+              required:
+                - position
+                - elapsed
+      security: []
+    parameters:
+      -
+        in: path
+        name: lesson_id
+        description: 'The ID of the lesson.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  '/api/learn/lessons/{lesson_id}/complete':
+    post:
+      summary: ''
+      operationId: postApiLearnLessonsLesson_idComplete
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: lesson_id
+        description: 'The ID of the lesson.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  '/api/learn/lessons/{lesson_id}/quiz':
+    post:
+      summary: ''
+      operationId: postApiLearnLessonsLesson_idQuiz
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                answers:
+                  type: array
+                  description: 'Must be between 0 and 9.'
+                  example:
+                    - 1
+                  items:
+                    type: integer
+      security: []
+    parameters:
+      -
+        in: path
+        name: lesson_id
+        description: 'The ID of the lesson.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  '/api/learn/questions/{question_id}/answer':
+    post:
+      summary: ''
+      operationId: postApiLearnQuestionsQuestion_idAnswer
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                selected_index:
+                  type: integer
+                  description: 'Must be between 0 and 9.'
+                  example: 1
+                context:
+                  type: string
+                  description: ''
+                  example: architecto
+                seconds:
+                  type: integer
+                  description: 'Must be at least 0.'
+                  example: 39
+                  nullable: true
+              required:
+                - selected_index
+                - context
+      security: []
+    parameters:
+      -
+        in: path
+        name: question_id
+        description: 'The ID of the question.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/learn/review:
+    get:
+      summary: ''
+      operationId: getApiLearnReview
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      security: []
+  /api/learn/mistakes:
+    get:
+      summary: ''
+      operationId: getApiLearnMistakes
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      security: []
+  /api/learn/recommendation:
+    get:
+      summary: ''
+      operationId: getApiLearnRecommendation
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      security: []
+  /api/brand/members:
+    get:
+      summary: ''
+      operationId: getApiBrandMembers
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                role:
+                  type: string
+                  description: ''
+                  example: null
+                  nullable: true
+                search:
+                  type: string
+                  description: 'Must not be greater than 100 characters.'
+                  example: b
+                  nullable: true
+      security: []
+    post:
+      summary: ''
+      operationId: postApiBrandMembers
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'Must not be greater than 120 characters.'
+                  example: b
+                email:
+                  type: string
+                  description: 'Must be a valid email address. Must not be greater than 190 characters.'
+                  example: zbailey@example.net
+                phone:
+                  type: string
+                  description: ''
+                  example: null
+                  nullable: true
+                password:
+                  type: string
+                  description: ''
+                  example: architecto
+                role:
+                  type: string
+                  description: ''
+                  example: student
+                  enum:
+                    - brand-admin
+                    - instructor
+                    - student
+              required:
+                - name
+                - email
+                - password
+                - role
+      security: []
+  /api/brand/orders:
+    get:
+      summary: ''
+      operationId: getApiBrandOrders
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  description: ''
+                  example: null
+                  nullable: true
+      security: []
+  /api/brand/reports/sales:
+    get:
+      summary: ''
+      operationId: getApiBrandReportsSales
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      security: []
+  /api/brand/coupons:
+    get:
+      summary: ''
+      operationId: getApiBrandCoupons
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      security: []
+    post:
+      summary: ''
+      operationId: postApiBrandCoupons
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: string
+                  description: 'Must contain only letters, numbers, dashes and underscores. Must not be greater than 40 characters.'
+                  example: b
+                type:
+                  type: string
+                  description: ''
+                  example: fixed
+                  enum:
+                    - percent
+                    - fixed
+                value:
+                  type: integer
+                  description: 'Must be at least 1.'
+                  example: 22
+                max_uses:
+                  type: integer
+                  description: 'Must be at least 1.'
+                  example: 67
+                  nullable: true
+                min_amount:
+                  type: integer
+                  description: 'Must be at least 0.'
+                  example: 12
+                  nullable: true
+                expires_at:
+                  type: string
+                  description: 'Must be a valid date. Must be a date after <code>now</code>.'
+                  example: '2052-12-20'
+                  nullable: true
+              required:
+                - code
+                - type
+                - value
+      security: []
+  '/api/brand/coupons/{coupon_id}':
+    patch:
+      summary: ''
+      operationId: patchApiBrandCouponsCoupon_id
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: coupon_id
+        description: 'The ID of the coupon.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/brand/payout:
+    get:
+      summary: "Bank account the platform pays the brand's revenue share into."
+      operationId: bankAccountThePlatformPaysTheBrandsRevenueShareInto
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                account_holder:
+                  type: string
+                  description: 'Must not be greater than 150 characters.'
+                  example: b
+                iban:
+                  type: string
+                  description: ''
+                  example: architecto
+                vkn:
+                  type: string
+                  description: ''
+                  example: architecto
+              required:
+                - account_holder
+                - iban
+                - vkn
+      security: []
+  /api/manage/courses:
+    get:
+      summary: ''
+      operationId: getApiManageCourses
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      security: []
+    post:
+      summary: ''
+      operationId: postApiManageCourses
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: 'Must be at least 3 characters. Must not be greater than 150 characters.'
+                  example: b
+                slug:
+                  type: string
+                  description: 'Must contain only letters, numbers, dashes and underscores. Must not be greater than 160 characters.'
+                  example: 'n'
+                summary:
+                  type: string
+                  description: 'Must not be greater than 300 characters.'
+                  example: g
+                  nullable: true
+                description:
+                  type: string
+                  description: 'Must not be greater than 20000 characters.'
+                  example: 'Quos velit et fugiat sunt nihil accusantium harum.'
+                  nullable: true
+                category:
+                  type: string
+                  description: 'Must not be greater than 60 characters.'
+                  example: i
+                  nullable: true
+                level:
+                  type: string
+                  description: ''
+                  example: advanced
+                  enum:
+                    - beginner
+                    - intermediate
+                    - advanced
+                price:
+                  type: integer
+                  description: 'Must be at least 0. Must not be greater than 10000000.'
+                  example: 8
+                compare_at_price:
+                  type: integer
+                  description: ''
+                  example: 16
+                  nullable: true
+                included_in_subscription:
+                  type: boolean
+                  description: ''
+                  example: true
+              required:
+                - title
+      security: []
+  '/api/manage/courses/{id}':
+    get:
+      summary: ''
+      operationId: getApiManageCoursesId
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the course.'
+        example: architecto
+        required: true
+        schema:
+          type: string
+  '/api/manage/courses/{course_id}':
+    patch:
+      summary: ''
+      operationId: patchApiManageCoursesCourse_id
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: 'Must be at least 3 characters. Must not be greater than 150 characters.'
+                  example: b
+                slug:
+                  type: string
+                  description: 'Must contain only letters, numbers, dashes and underscores. Must not be greater than 160 characters.'
+                  example: 'n'
+                summary:
+                  type: string
+                  description: 'Must not be greater than 300 characters.'
+                  example: g
+                  nullable: true
+                description:
+                  type: string
+                  description: 'Must not be greater than 20000 characters.'
+                  example: 'Quos velit et fugiat sunt nihil accusantium harum.'
+                  nullable: true
+                category:
+                  type: string
+                  description: 'Must not be greater than 60 characters.'
+                  example: i
+                  nullable: true
+                level:
+                  type: string
+                  description: ''
+                  example: intermediate
+                  enum:
+                    - beginner
+                    - intermediate
+                    - advanced
+                price:
+                  type: integer
+                  description: 'Must be at least 0. Must not be greater than 10000000.'
+                  example: 8
+                compare_at_price:
+                  type: integer
+                  description: ''
+                  example: 16
+                  nullable: true
+                included_in_subscription:
+                  type: boolean
+                  description: ''
+                  example: false
+      security: []
+    delete:
+      summary: ''
+      operationId: deleteApiManageCoursesCourse_id
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: course_id
+        description: 'The ID of the course.'
+        example: architecto
+        required: true
+        schema:
+          type: string
+  '/api/manage/courses/{course_id}/publish':
+    post:
+      summary: ''
+      operationId: postApiManageCoursesCourse_idPublish
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: course_id
+        description: 'The ID of the course.'
+        example: architecto
+        required: true
+        schema:
+          type: string
+  '/api/manage/courses/{course_id}/unpublish':
+    post:
+      summary: ''
+      operationId: postApiManageCoursesCourse_idUnpublish
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: course_id
+        description: 'The ID of the course.'
+        example: architecto
+        required: true
+        schema:
+          type: string
+  '/api/manage/courses/{course_id}/cover':
+    post:
+      summary: ''
+      operationId: postApiManageCoursesCourse_idCover
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                cover:
+                  type: string
+                  format: binary
+                  description: 'Must be an image. Must not be greater than 5120 kilobytes.'
+              required:
+                - cover
+      security: []
+    parameters:
+      -
+        in: path
+        name: course_id
+        description: 'The ID of the course.'
+        example: architecto
+        required: true
+        schema:
+          type: string
+  '/api/manage/courses/{course_id}/report':
+    get:
+      summary: ''
+      operationId: getApiManageCoursesCourse_idReport
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: course_id
+        description: 'The ID of the course.'
+        example: architecto
+        required: true
+        schema:
+          type: string
+  '/api/manage/courses/{course_id}/sections':
+    post:
+      summary: ''
+      operationId: postApiManageCoursesCourse_idSections
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: 'Must not be greater than 150 characters.'
+                  example: b
+                position:
+                  type: integer
+                  description: 'Must be at least 0.'
+                  example: 39
+              required:
+                - title
+      security: []
+    parameters:
+      -
+        in: path
+        name: course_id
+        description: 'The ID of the course.'
+        example: architecto
+        required: true
+        schema:
+          type: string
+  '/api/manage/courses/{course_id}/sections/order':
+    put:
+      summary: ''
+      operationId: putApiManageCoursesCourse_idSectionsOrder
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sections:
+                  type: array
+                  description: ''
+                  example:
+                    - 16
+                  items:
+                    type: integer
+      security: []
+    parameters:
+      -
+        in: path
+        name: course_id
+        description: 'The ID of the course.'
+        example: architecto
+        required: true
+        schema:
+          type: string
+  '/api/manage/sections/{section_id}':
+    patch:
+      summary: ''
+      operationId: patchApiManageSectionsSection_id
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: 'Must not be greater than 150 characters.'
+                  example: b
+                position:
+                  type: integer
+                  description: 'Must be at least 0.'
+                  example: 39
+      security: []
+    delete:
+      summary: ''
+      operationId: deleteApiManageSectionsSection_id
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: section_id
+        description: 'The ID of the section.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  '/api/manage/sections/{section_id}/lessons':
+    post:
+      summary: ''
+      operationId: postApiManageSectionsSection_idLessons
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: 'Must not be greater than 150 characters.'
+                  example: b
+                type:
+                  type: string
+                  description: ''
+                  example: video
+                  enum:
+                    - video
+                    - text
+                    - pdf
+                content:
+                  type: string
+                  description: 'Must not be greater than 200000 characters.'
+                  example: 'n'
+                  nullable: true
+                transcript:
+                  type: string
+                  description: 'Must not be greater than 200000 characters.'
+                  example: g
+                  nullable: true
+                position:
+                  type: integer
+                  description: 'Must be at least 0.'
+                  example: 12
+                is_preview:
+                  type: boolean
+                  description: ''
+                  example: false
+              required:
+                - title
+                - type
+      security: []
+    parameters:
+      -
+        in: path
+        name: section_id
+        description: 'The ID of the section.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  '/api/manage/lessons/{lesson_id}':
+    patch:
+      summary: ''
+      operationId: patchApiManageLessonsLesson_id
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: 'Must not be greater than 150 characters.'
+                  example: b
+                type:
+                  type: string
+                  description: ''
+                  example: video
+                  enum:
+                    - video
+                    - text
+                    - pdf
+                content:
+                  type: string
+                  description: 'Must not be greater than 200000 characters.'
+                  example: 'n'
+                  nullable: true
+                transcript:
+                  type: string
+                  description: 'Must not be greater than 200000 characters.'
+                  example: g
+                  nullable: true
+                position:
+                  type: integer
+                  description: 'Must be at least 0.'
+                  example: 12
+                is_preview:
+                  type: boolean
+                  description: ''
+                  example: true
+      security: []
+    delete:
+      summary: ''
+      operationId: deleteApiManageLessonsLesson_id
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: lesson_id
+        description: 'The ID of the lesson.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  '/api/manage/lessons/{lesson_id}/video':
+    post:
+      summary: 'Upload the lesson video; duration and thumbnail are filled in by a queued job.'
+      operationId: uploadTheLessonVideoDurationAndThumbnailAreFilledInByAQueuedJob
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                video:
+                  type: string
+                  format: binary
+                  description: 'Must be a file. Must not be greater than 204800 kilobytes.'
+              required:
+                - video
+      security: []
+    parameters:
+      -
+        in: path
+        name: lesson_id
+        description: 'The ID of the lesson.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  '/api/manage/lessons/{lesson_id}/questions':
+    get:
+      summary: ''
+      operationId: getApiManageLessonsLesson_idQuestions
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  description: ''
+                  example: null
+                  nullable: true
+      security: []
+    post:
+      summary: ''
+      operationId: postApiManageLessonsLesson_idQuestions
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: lesson_id
+        description: 'The ID of the lesson.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  '/api/manage/questions/{question_id}':
+    patch:
+      summary: ''
+      operationId: patchApiManageQuestionsQuestion_id
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      security: []
+    delete:
+      summary: ''
+      operationId: deleteApiManageQuestionsQuestion_id
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: question_id
+        description: 'The ID of the question.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  '/api/manage/lessons/{lesson_id}/ai-questions':
+    post:
+      summary: ''
+      operationId: postApiManageLessonsLesson_idAiQuestions
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                count:
+                  type: integer
+                  description: 'Must be between 1 and 10.'
+                  example: 2
+                  nullable: true
+      security: []
+    parameters:
+      -
+        in: path
+        name: lesson_id
+        description: 'The ID of the lesson.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/manage/ai-generations:
+    get:
+      summary: 'Generations of the courses the user manages, newest first, with their drafts.'
+      operationId: generationsOfTheCoursesTheUserManagesNewestFirstWithTheirDrafts
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  description: ''
+                  example: null
+                  nullable: true
+      security: []
+  '/api/manage/ai-generations/{generation_id}':
+    get:
+      summary: ''
+      operationId: getApiManageAiGenerationsGeneration_id
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: generation_id
+        description: 'The ID of the generation.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  '/api/manage/ai-generations/{generation_id}/review':
+    post:
+      summary: 'Publish the chosen drafts and reject the rest of the batch.'
+      operationId: publishTheChosenDraftsAndRejectTheRestOfTheBatch
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                approve:
+                  type: array
+                  description: ''
+                  example:
+                    - 16
+                  items:
+                    type: integer
+      security: []
+    parameters:
+      -
+        in: path
+        name: generation_id
+        description: 'The ID of the generation.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/brands:
+    get:
+      summary: ''
+      operationId: getApiBrands
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      security: []
+  '/api/webhooks/payments/{provider}':
+    post:
+      summary: 'Server-to-server notification. Signature checked, then processed exactly once.'
+      operationId: serverToServerNotificationSignatureCheckedThenProcessedExactlyOnce
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: provider
+        description: ''
+        example: architecto
+        required: true
+        schema:
+          type: string
+  /api/payments/iyzico/callback:
+    post:
+      summary: 'iyzico posts the buyer back here with the checkout token after the payment page.'
+      operationId: iyzicoPostsTheBuyerBackHereWithTheCheckoutTokenAfterThePaymentPage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      security: []
+  /api/platform/tenants:
+    get:
+      summary: ''
+      operationId: getApiPlatformTenants
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      security: []
+    post:
+      summary: ''
+      operationId: postApiPlatformTenants
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                slug:
+                  type: string
+                  description: 'Must match the regex /^[a-z0-9]+(-[a-z0-9]+)*$/. Must not be one of <code>www</code>, <code>admin</code>, <code>api</code>, <code>app</code>, or <code>mail</code> Must be at least 3 characters. Must not be greater than 63 characters.'
+                  example: b
+                name:
+                  type: string
+                  description: 'Must not be greater than 120 characters.'
+                  example: 'n'
+                tagline:
+                  type: string
+                  description: 'Must not be greater than 200 characters.'
+                  example: g
+                  nullable: true
+                theme:
+                  type: object
+                  description: ''
+                  example: null
+                  properties:
+                    primary:
+                      type: string
+                      description: ''
+                      example: null
+                      nullable: true
+                    accent:
+                      type: string
+                      description: ''
+                      example: null
+                      nullable: true
+                    font:
+                      type: string
+                      description: ''
+                      example: serif
+                      enum:
+                        - sans
+                        - serif
+                        - rounded
+                      nullable: true
+                    hero:
+                      type: string
+                      description: ''
+                      example: gradient
+                      enum:
+                        - gradient
+                        - split
+                        - stats
+                      nullable: true
+                  nullable: true
+                plan:
+                  type: string
+                  description: ''
+                  example: pro
+                  enum:
+                    - starter
+                    - pro
+                    - business
+                commission_rate:
+                  type: number
+                  description: 'Must be between 0 and 50.'
+                  example: 1
+                is_active:
+                  type: boolean
+                  description: ''
+                  example: false
+              required:
+                - slug
+                - name
+      security: []
+  /api/platform/reports:
+    get:
+      summary: ''
+      operationId: getApiPlatformReports
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      security: []
+  '/api/platform/tenants/{tenant_slug}':
+    patch:
+      summary: ''
+      operationId: patchApiPlatformTenantsTenant_slug
+      description: ''
+      parameters:
+        -
+          in: header
+          name: X-Tenant
+          description: ''
+          example: kodakademi
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                slug:
+                  type: string
+                  description: 'Must match the regex /^[a-z0-9]+(-[a-z0-9]+)*$/. Must not be one of <code>www</code>, <code>admin</code>, <code>api</code>, <code>app</code>, or <code>mail</code> Must be at least 3 characters. Must not be greater than 63 characters.'
+                  example: b
+                name:
+                  type: string
+                  description: 'Must not be greater than 120 characters.'
+                  example: 'n'
+                tagline:
+                  type: string
+                  description: 'Must not be greater than 200 characters.'
+                  example: g
+                  nullable: true
+                theme:
+                  type: object
+                  description: ''
+                  example: null
+                  properties:
+                    primary:
+                      type: string
+                      description: ''
+                      example: null
+                      nullable: true
+                    accent:
+                      type: string
+                      description: ''
+                      example: null
+                      nullable: true
+                    font:
+                      type: string
+                      description: ''
+                      example: serif
+                      enum:
+                        - sans
+                        - serif
+                        - rounded
+                      nullable: true
+                    hero:
+                      type: string
+                      description: ''
+                      example: gradient
+                      enum:
+                        - gradient
+                        - split
+                        - stats
+                      nullable: true
+                  nullable: true
+                plan:
+                  type: string
+                  description: ''
+                  example: business
+                  enum:
+                    - starter
+                    - pro
+                    - business
+                commission_rate:
+                  type: number
+                  description: 'Must be between 0 and 50.'
+                  example: 1
+                is_active:
+                  type: boolean
+                  description: ''
+                  example: false
+              required:
+                - slug
+                - name
+      security: []
+    parameters:
+      -
+        in: path
+        name: tenant_slug
+        description: 'The slug of the tenant.'
+        example: kodakademi
+        required: true
+        schema:
+          type: string

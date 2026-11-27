@@ -32,6 +32,10 @@ class AppServiceProvider extends ServiceProvider
         // Platform administrators may do anything a policy allows to anyone.
         Gate::before(fn (User $user) => $user->hasRole(Role::PlatformAdmin->value) ? true : null);
 
+        // Baseline for every API call: per user when signed in, otherwise per IP.
+        RateLimiter::for('api', fn (Request $request) => Limit::perMinute(240)
+            ->by((string) ($request->user()?->getAuthIdentifier() ?? $request->ip())));
+
         RateLimiter::for('auth', fn (Request $request) => [
             Limit::perMinute(10)->by($request->ip().'|'.$request->input('email')),
         ]);

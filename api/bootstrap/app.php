@@ -18,6 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->statefulApi();
+        $middleware->throttleApi('api');
         $middleware->prependToGroup('api', ResolveTenant::class);
         $middleware->alias([
             'tenant' => RequireTenant::class,
