@@ -20,3 +20,5 @@ export const levelLabel = {
 export function formatDate(iso: string | null | undefined): string {
   return iso ? new Date(iso).toLocaleDateString("tr-TR", { day: "numeric", month: "long", year: "numeric" }) : "-";
 }
+
+export const statusLabel = { draft: "Taslak", published: "Yayında", archived: "Arşiv" } as const;

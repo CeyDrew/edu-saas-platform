@@ -7,7 +7,7 @@ import type { Course } from "@/lib/api/types";
 import { cn } from "@/lib/utils";
 
 /** Purchase entry point; checkout itself lives in /odeme. */
-export function BuyBox({ course }: { course: Course }) {
+export function BuyBox({ course }: { course: Pick<Course, "slug" | "price"> }) {
   const { data: me } = useMe();
   const target = `/odeme?kurs=${course.slug}`;
   const href = me ? target : `/giris?next=${encodeURIComponent(target)}`;

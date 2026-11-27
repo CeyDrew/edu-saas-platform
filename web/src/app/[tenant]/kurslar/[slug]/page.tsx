@@ -117,7 +117,7 @@ export default async function CoursePage({ params }: PageProps<"/[tenant]/kursla
                 <span className="text-muted-foreground line-through">{formatPrice(course.compare_at_price)}</span>
               )}
             </div>
-            <BuyBox course={course} />
+            <BuyBox course={{ slug: course.slug, price: course.price }} />
             <ul className="space-y-2 text-sm text-muted-foreground">
               {["Ömür boyu erişim", "Video görevleri ve testler", "Kişisel tekrar planı"].map((item) => (
                 <li key={item} className="flex items-center gap-2">
