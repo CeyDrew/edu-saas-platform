@@ -1,5 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
-import { brandUrl } from "./urls";
+import { brandUrl, waitForApp } from "./urls";
 
 const BRAND = "dilokulu";
 
@@ -7,6 +7,7 @@ const BRAND = "dilokulu";
 async function signUp(page: Page) {
   const email = `e2e-${Date.now()}@example.com`;
   await page.goto(brandUrl(BRAND, "/kayit"));
+  await waitForApp(page);
   await page.getByLabel("Ad soyad").fill("Deneme Öğrenci");
   await page.getByLabel("E-posta").fill(email);
   await page.getByLabel("Şifre", { exact: true }).fill("gizli-sifre-123");

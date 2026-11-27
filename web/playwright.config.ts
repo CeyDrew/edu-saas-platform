@@ -16,6 +16,8 @@ export default defineConfig({
     trace: "retain-on-failure",
     screenshot: "only-on-failure",
     locale: "tr-TR",
+    // Docker Desktop forwards IPv4 reliably; keep brand subdomains on 127.0.0.1.
+    launchOptions: { args: ["--host-resolver-rules=MAP *.localhost 127.0.0.1, MAP localhost 127.0.0.1"] },
   },
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
 });

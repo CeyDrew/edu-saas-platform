@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 import path from "node:path";
-import { brandUrl, platformUrl } from "./urls";
+import { brandUrl, platformUrl, waitForApp } from "./urls";
 
 /**
  * Regenerates docs/screenshots. Skipped in normal runs:
@@ -13,6 +13,8 @@ const out = (name: string) => path.join(__dirname, "..", "..", "docs", "screensh
 
 async function login(page: Page, url: string, email: string) {
   await page.goto(url);
+  await page.getByRole("button", { name: "Giriş yap" }).waitFor();
+  await page.waitForLoadState("networkidle");
   await page.getByLabel("E-posta").fill(email);
   await page.getByLabel("Şifre").fill("password");
   await page.getByRole("button", { name: "Giriş yap" }).click();

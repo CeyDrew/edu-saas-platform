@@ -1,10 +1,11 @@
 import { expect, test } from "@playwright/test";
-import { brandUrl } from "./urls";
+import { brandUrl, waitForApp } from "./urls";
 
 const BRAND = "kodakademi";
 
 test("a student answers a video task, takes the quiz and finds the mistake in the archive", async ({ page }) => {
   await page.goto(brandUrl(BRAND, "/giris"));
+  await waitForApp(page);
   await page.getByLabel("E-posta").fill(`ogrenci@${BRAND}.test`);
   await page.getByLabel("Şifre").fill("password");
   await page.getByRole("button", { name: "Giriş yap" }).click();
@@ -15,7 +16,11 @@ test("a student answers a video task, takes the quiz and finds the mistake in th
   await expect(page.getByTestId("course-progress")).toBeVisible();
 
   // Jump to the first lesson and seek the demo player past the video task.
-  await page.getByRole("button", { name: /Değişkenler|Routing|Commit|İmaj|JSX/ }).first().click();
+  const lesson = page.getByRole("button", { name: /Değişkenler|Routing|Commit|İmaj|JSX/ }).first();
+  const title = ((await lesson.locator("span").first().textContent()) ?? "").trim();
+  await lesson.click();
+  await expect(page).toHaveURL(/\?ders=\d+/);
+  await expect(page.getByRole("heading", { level: 1, name: title })).toBeVisible();
   const timeline = page.getByLabel("Zaman çizelgesi");
   const max = Number(await timeline.getAttribute("max"));
   await timeline.fill(String(Math.round(max / 2)));

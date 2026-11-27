@@ -10,6 +10,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 COPY docker/php/php.ini /usr/local/etc/php/conf.d/zz-app.ini
+COPY docker/php/entrypoint.sh /usr/local/bin/bootstrap
+RUN sed -i 's/\r$//' /usr/local/bin/bootstrap && chmod +x /usr/local/bin/bootstrap
 
 # Bind mounts from Windows/macOS hosts are owned by root inside the container,
 # so the dev image runs FPM workers as root (-R) to keep storage/ writable.

@@ -93,7 +93,8 @@
         },
         "platform": {
             "php": "8.4.20"
-        }
+        },
+        "github-protocols": ["https"]
     },
     "minimum-stability": "stable",
     "prefer-stable": true,
