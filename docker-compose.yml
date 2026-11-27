@@ -80,7 +80,7 @@ services:
     image: ollama/ollama:latest
     profiles: ["ai"]
     ports:
-      - "11434:11434"
+      - "11435:11434"
     volumes:
       - ollama-data:/root/.ollama
 

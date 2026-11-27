@@ -67,7 +67,10 @@ it('keeps drafts away from students until an instructor approves them', function
     $this->getJson("/api/learn/lessons/{$this->lesson->id}", $this->headers)->assertJsonCount(0, 'data.quiz');
 
     Sanctum::actingAs($this->instructor);
-    $this->getJson('/api/manage/ai-generations', $this->headers)->assertJsonCount(3, 'data.0.drafts');
+    $this->getJson('/api/manage/ai-generations', $this->headers)
+        ->assertJsonCount(3, 'data.0.drafts')
+        ->assertJsonPath('data.0.drafts.0.correct_index', 0)
+        ->assertJsonPath('data.0.drafts.0.status', 'draft');
     $this->postJson("/api/manage/ai-generations/{$generationId}/review", ['approve' => [$drafts[0], $drafts[1]]], $this->headers)
         ->assertJsonPath('data.approved', 2)
         ->assertJsonPath('data.rejected', 1);

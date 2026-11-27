@@ -2,7 +2,7 @@
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { CalendarClock, PartyPopper } from "lucide-react";
+import { CalendarClock, PartyPopper, Sparkles } from "lucide-react";
 import { QuestionCard } from "@/components/learn/question-card";
 import { PageHeader, StatCard } from "@/components/panel/panel-shell";
 import { Badge } from "@/components/ui/badge";
@@ -27,6 +27,7 @@ export default function ReviewPage() {
   return (
     <>
       <PageHeader title="Tekrar listem" description="Yanlış yaptığın sorular aralıklı tekrar (SM-2) ile karşına çıkar." />
+      <Advice />
       <Tabs defaultValue="today">
         <TabsList>
           <TabsTrigger value="today">Bugünün tekrarı</TabsTrigger>
@@ -40,6 +41,37 @@ export default function ReviewPage() {
         </TabsContent>
       </Tabs>
     </>
+  );
+}
+
+type Advice = { summary: string; focus: { lesson: string; reason: string }[]; generated_by: string };
+
+function Advice() {
+  const { data } = useQuery({
+    queryKey: ["review", "advice"],
+    queryFn: async () => (await apiFetch<{ data: Advice }>("/learn/recommendation")).data,
+    staleTime: 10 * 60_000,
+  });
+
+  if (!data) return null;
+
+  return (
+    <div className="mb-6 space-y-2 rounded-xl border border-primary/30 bg-primary/5 p-4" data-testid="advice">
+      <p className="flex items-center gap-2 text-sm font-semibold">
+        <Sparkles className="size-4 text-primary" /> Çalışma önerin
+        <span className="text-xs font-normal text-muted-foreground">({data.generated_by === "rules" ? "kural tabanlı" : `AI · ${data.generated_by}`})</span>
+      </p>
+      <p className="text-sm">{data.summary}</p>
+      {data.focus.length > 0 && (
+        <ul className="list-inside list-disc text-sm text-muted-foreground">
+          {data.focus.map((item) => (
+            <li key={item.lesson}>
+              <strong className="text-foreground">{item.lesson}</strong>: {item.reason}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
   );
 }
 

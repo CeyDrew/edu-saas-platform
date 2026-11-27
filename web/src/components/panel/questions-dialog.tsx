@@ -3,7 +3,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
-import { CircleHelp, Clock, Trash2 } from "lucide-react";
+import { CircleHelp, Clock, Sparkles, Trash2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -47,6 +47,13 @@ export function QuestionsDialog({ lesson }: { lesson: Lesson }) {
     onError: (error) => toast.error(error instanceof ApiError ? (Object.values(error.fieldErrors())[0] ?? error.message) : "Hata"),
   });
 
+  const [count, setCount] = useState(5);
+  const generate = useMutation({
+    mutationFn: () => apiFetch(`/manage/lessons/${lesson.id}/ai-questions`, { method: "POST", body: json({ count }) }),
+    onSuccess: () => toast.success("Soru üretimi kuyruğa alındı. Taslaklar “AI soru onayı” sayfasına düşecek."),
+    onError: (error) => toast.error(error instanceof ApiError ? error.message : "Hata"),
+  });
+
   const remove = useMutation({
     mutationFn: (id: number) => apiFetch(`/manage/questions/${id}`, { method: "DELETE" }),
     onSuccess: refresh,
@@ -61,6 +68,21 @@ export function QuestionsDialog({ lesson }: { lesson: Lesson }) {
         <DialogHeader>
           <DialogTitle>{lesson.title} · Soru bankası</DialogTitle>
         </DialogHeader>
+
+        <div className="flex flex-wrap items-center gap-2 rounded-lg border border-primary/30 bg-primary/5 p-3 text-sm">
+          <Sparkles className="size-4 text-primary" />
+          <span className="flex-1">Ders metninden yapay zekâ ile taslak soru üret</span>
+          <select className="h-7 rounded-md border bg-background px-2" value={count} onChange={(e) => setCount(Number(e.target.value))} aria-label="Soru sayısı">
+            {[3, 5, 10].map((n) => (
+              <option key={n} value={n}>
+                {n} soru
+              </option>
+            ))}
+          </select>
+          <Button size="sm" onClick={() => generate.mutate()} disabled={generate.isPending}>
+            AI ile üret
+          </Button>
+        </div>
 
         <ul className="space-y-2">
           {data?.map((question) => (

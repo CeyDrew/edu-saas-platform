@@ -30,7 +30,7 @@ class QuestionResource extends JsonResource
     {
         $rows = [];
         foreach ($questions as $question) {
-            $rows[] = (new self($question))->forStaff()->toArray($request);
+            $rows[] = (new self($question))->forStaff()->resolve($request);
         }
 
         return $rows;
