@@ -1,0 +1,1 @@
+O:23:"PHPStan\Cache\CacheItem":2:{s:11:"variableKey";s:74:"v2-39d3e41b56a24da88a9d8ba4509c7576ec4091c6ef9c8dcd158ca804e52ae99e-8.4.20";s:4:"data";a:3:{s:7:"classes";a:1:{s:21:"laravel\scout\builder";b:1;}s:9:"functions";a:0:{}s:9:"constants";a:0:{}}}

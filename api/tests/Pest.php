@@ -6,6 +6,8 @@ use App\Domain\Tenancy\TenantContext;
 use App\Models\User;
 use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Process;
 use Tests\TestCase;
 
 pest()->extend(TestCase::class)
@@ -37,4 +39,22 @@ function userWithRole(Role $role, ?Tenant $tenant = null, array $attributes = []
 function asTenant(Tenant $tenant, callable $callback): mixed
 {
     return app(TenantContext::class)->run($tenant, $callback);
+}
+
+/**
+ * A real, tiny MP4 so media validation sees genuine video content. Needs ffmpeg.
+ */
+function fakeVideo(string $name = 'ders.mp4', int $seconds = 2): UploadedFile
+{
+    $path = sys_get_temp_dir().'/'.uniqid('video', true).'.mp4';
+    $result = Process::run([
+        'ffmpeg', '-y', '-loglevel', 'error', '-f', 'lavfi',
+        '-i', "testsrc=duration={$seconds}:size=160x120:rate=5", '-pix_fmt', 'yuv420p', $path,
+    ]);
+
+    if ($result->failed()) {
+        test()->markTestSkipped('ffmpeg is not installed.');
+    }
+
+    return new UploadedFile($path, $name, 'video/mp4', null, true);
 }

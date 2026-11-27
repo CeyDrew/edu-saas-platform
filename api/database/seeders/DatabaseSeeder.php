@@ -12,6 +12,7 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             TenantSeeder::class,
             DemoUserSeeder::class,
+            CatalogSeeder::class,
         ]);
     }
 }
