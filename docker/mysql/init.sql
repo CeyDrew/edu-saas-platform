@@ -1,0 +1,3 @@
+CREATE DATABASE IF NOT EXISTS edu_saas_testing;
+GRANT ALL PRIVILEGES ON edu_saas_testing.* TO 'edu'@'%';
+FLUSH PRIVILEGES;

@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+# Runs artisan inside the php container.
+exec docker compose exec php php artisan "$@"

@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+# Runs composer inside the php container.
+exec docker compose exec php composer "$@"
