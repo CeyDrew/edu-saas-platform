@@ -6,9 +6,12 @@ use App\Http\Controllers\Api\Brand\SalesController;
 use App\Http\Controllers\Api\BrandDirectoryController;
 use App\Http\Controllers\Api\Catalog\CourseController as CatalogCourseController;
 use App\Http\Controllers\Api\CurrentTenantController;
+use App\Http\Controllers\Api\Learning\LearnController;
 use App\Http\Controllers\Api\Learning\MyCoursesController;
+use App\Http\Controllers\Api\Learning\ReviewController;
 use App\Http\Controllers\Api\Manage\CourseController as ManageCourseController;
 use App\Http\Controllers\Api\Manage\LessonController;
+use App\Http\Controllers\Api\Manage\QuestionController;
 use App\Http\Controllers\Api\Manage\SectionController;
 use App\Http\Controllers\Api\Platform\TenantController;
 use App\Http\Controllers\Api\Sales\AccountController;
@@ -51,6 +54,17 @@ Route::middleware('tenant')->group(function () {
             Route::post('/subscription/cancel', [AccountController::class, 'cancelSubscription']);
         });
 
+        Route::prefix('learn')->group(function () {
+            Route::get('/courses/{course}', [LearnController::class, 'course']);
+            Route::get('/lessons/{lesson}', [LearnController::class, 'lesson']);
+            Route::post('/lessons/{lesson}/progress', [LearnController::class, 'progress'])->middleware('throttle:progress');
+            Route::post('/lessons/{lesson}/complete', [LearnController::class, 'complete']);
+            Route::post('/lessons/{lesson}/quiz', [LearnController::class, 'quiz']);
+            Route::post('/questions/{question}/answer', [LearnController::class, 'answer']);
+            Route::get('/review', [ReviewController::class, 'due']);
+            Route::get('/mistakes', [ReviewController::class, 'mistakes']);
+        });
+
         Route::prefix('brand')->group(function () {
             Route::get('/members', [MemberController::class, 'index']);
             Route::post('/members', [MemberController::class, 'store']);
@@ -80,6 +94,11 @@ Route::middleware('tenant')->group(function () {
             Route::patch('/lessons/{lesson}', [LessonController::class, 'update']);
             Route::delete('/lessons/{lesson}', [LessonController::class, 'destroy']);
             Route::post('/lessons/{lesson}/video', [LessonController::class, 'video']);
+
+            Route::get('/lessons/{lesson}/questions', [QuestionController::class, 'index']);
+            Route::post('/lessons/{lesson}/questions', [QuestionController::class, 'store']);
+            Route::patch('/questions/{question}', [QuestionController::class, 'update']);
+            Route::delete('/questions/{question}', [QuestionController::class, 'destroy']);
         });
     });
 });

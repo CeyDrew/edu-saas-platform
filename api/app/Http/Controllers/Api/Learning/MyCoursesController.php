@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Learning;
 
 use App\Domain\Catalog\Models\Course;
 use App\Domain\Learning\EnrollmentService;
+use App\Domain\Learning\LearningService;
 use App\Domain\Learning\Models\Enrollment;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CourseResource;
@@ -17,7 +18,7 @@ use Illuminate\Http\Request;
  */
 class MyCoursesController extends Controller
 {
-    public function __invoke(Request $request, EnrollmentService $enrollments): JsonResponse
+    public function __invoke(Request $request, EnrollmentService $enrollments, LearningService $learning): JsonResponse
     {
         /** @var User $user */
         $user = $request->user();
@@ -41,6 +42,7 @@ class MyCoursesController extends Controller
             'data' => $rows->map(fn (array $row) => [
                 'source' => $row['source'],
                 'course' => new CourseResource($row['course']),
+                'progress' => $learning->courseProgress($user, $row['course']),
             ])->values(),
         ]);
     }

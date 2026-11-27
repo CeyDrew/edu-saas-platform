@@ -37,6 +37,9 @@ class AppServiceProvider extends ServiceProvider
 
         RateLimiter::for('checkout', fn (Request $request) => Limit::perMinute(10)->by((string) ($request->user()?->getAuthIdentifier() ?? $request->ip())));
 
+        // The player sends a heartbeat every ~15 seconds.
+        RateLimiter::for('progress', fn (Request $request) => Limit::perMinute(30)->by((string) $request->user()?->getAuthIdentifier()));
+
         RateLimiter::for('webhooks', fn (Request $request) => Limit::perMinute(120)->by($request->ip()));
     }
 }
