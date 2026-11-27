@@ -1,5 +1,7 @@
 <?php
 
+use App\Domain\Tenancy\Http\Middleware\EnsureTenantMember;
+use App\Domain\Tenancy\Http\Middleware\RequirePlatform;
 use App\Domain\Tenancy\Http\Middleware\RequireTenant;
 use App\Domain\Tenancy\Http\Middleware\ResolveTenant;
 use Illuminate\Foundation\Application;
@@ -19,6 +21,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->prependToGroup('api', ResolveTenant::class);
         $middleware->alias([
             'tenant' => RequireTenant::class,
+            'platform' => RequirePlatform::class,
+            'member' => EnsureTenantMember::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

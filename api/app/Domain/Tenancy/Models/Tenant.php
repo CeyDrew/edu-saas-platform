@@ -2,11 +2,13 @@
 
 namespace App\Domain\Tenancy\Models;
 
+use App\Models\User;
 use Database\Factories\TenantFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\UseFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Cache;
 
 /**
@@ -44,6 +46,14 @@ class Tenant extends Model
         // The resolver caches slug lookups; drop them when a brand changes or is closed.
         static::saved(fn (Tenant $tenant) => Cache::forget("tenant-slug:{$tenant->getOriginal('slug')}"));
         static::saved(fn (Tenant $tenant) => Cache::forget("tenant-slug:{$tenant->slug}"));
+    }
+
+    /**
+     * @return HasMany<User, $this>
+     */
+    public function users(): HasMany
+    {
+        return $this->hasMany(User::class);
     }
 
     public function getRouteKeyName(): string
