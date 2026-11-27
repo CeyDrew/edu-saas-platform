@@ -2,7 +2,6 @@
 
 namespace App\Domain\Sales\Services;
 
-use App\Domain\Sales\Enums\OrderStatus;
 use App\Domain\Sales\Enums\OrderType;
 use App\Domain\Sales\Enums\SubscriptionStatus;
 use App\Domain\Sales\Events\SubscriptionSuspended;
@@ -125,11 +124,5 @@ class SubscriptionService
             ->orWhere(function ($query) {
                 $query->where('status', SubscriptionStatus::PastDue)->where('next_attempt_at', '<=', now());
             });
-    }
-
-    public static function hasPendingRenewal(Subscription $subscription): bool
-    {
-        return Order::query()->where('user_id', $subscription->user_id)
-            ->where('type', OrderType::Renewal)->where('status', OrderStatus::Pending)->exists();
     }
 }
