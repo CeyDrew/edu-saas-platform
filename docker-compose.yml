@@ -7,6 +7,9 @@ x-php: &php
   image: edu-saas/php:latest
   volumes:
     - ./api:/var/www/api
+  environment:
+    # Optional GitHub token for composer (avoids API rate limits in CI).
+    COMPOSER_AUTH: ${COMPOSER_AUTH:-}
   depends_on:
     mysql:
       condition: service_healthy
