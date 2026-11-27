@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Cache;
  * @property string $plan
  * @property string $commission_rate
  * @property bool $is_active
+ * @property array{account_holder: string, iban: string, vkn: string}|null $payout
  */
 #[Fillable(['slug', 'name', 'tagline', 'theme', 'plan', 'commission_rate', 'is_active'])]
 #[UseFactory(TenantFactory::class)]
@@ -36,6 +37,7 @@ class Tenant extends Model
     {
         return [
             'theme' => 'array',
+            'payout' => 'array',
             'is_active' => 'boolean',
             'commission_rate' => 'decimal:2',
         ];
