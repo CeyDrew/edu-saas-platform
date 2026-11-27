@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
             TenantSeeder::class,
             DemoUserSeeder::class,
             CatalogSeeder::class,
+            SalesSeeder::class,
         ]);
     }
 }

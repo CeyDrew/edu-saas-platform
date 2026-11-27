@@ -7,7 +7,6 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { homeFor } from "@/hooks/use-me";
 import { ApiError, apiFetch, json } from "@/lib/api/client";
 import type { User } from "@/lib/api/types";
@@ -55,10 +54,17 @@ export function LoginForm({ demoHint }: { demoHint?: string }) {
 
 export function Field({ label, error, children }: { label: string; error?: string; children: React.ReactNode }) {
   return (
+    // Wrapping the control in the <label> ties them together for screen readers.
     <div className="space-y-1.5">
-      <Label>{label}</Label>
-      {children}
-      {error && <p className="text-sm text-destructive">{error}</p>}
+      <label className="block space-y-1.5">
+        <span className="text-sm leading-none font-medium">{label}</span>
+        {children}
+      </label>
+      {error && (
+        <p className="text-sm text-destructive" role="alert">
+          {error}
+        </p>
+      )}
     </div>
   );
 }

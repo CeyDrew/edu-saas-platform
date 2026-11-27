@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\Brand\SalesController;
 use App\Http\Controllers\Api\BrandDirectoryController;
 use App\Http\Controllers\Api\Catalog\CourseController as CatalogCourseController;
 use App\Http\Controllers\Api\CurrentTenantController;
+use App\Http\Controllers\Api\Learning\MyCoursesController;
 use App\Http\Controllers\Api\Manage\CourseController as ManageCourseController;
 use App\Http\Controllers\Api\Manage\LessonController;
 use App\Http\Controllers\Api\Manage\SectionController;
@@ -43,6 +44,7 @@ Route::middleware('tenant')->group(function () {
         Route::post('/payments/fake/complete', [PaymentController::class, 'fakeComplete']);
 
         Route::prefix('me')->group(function () {
+            Route::get('/courses', MyCoursesController::class);
             Route::get('/orders', [AccountController::class, 'orders']);
             Route::get('/orders/{order}', [AccountController::class, 'order']);
             Route::get('/subscription', [AccountController::class, 'subscription']);

@@ -81,3 +81,9 @@ export type Paginated<T> = {
 };
 
 export type ApiErrorBody = { message?: string; errors?: Record<string, string[]> };
+
+export type MyCourse = {
+  source: "purchase" | "free" | "subscription";
+  course: Course;
+  progress?: { completed_lessons: number; percent: number; next_lesson_id: number | null };
+};
