@@ -8,7 +8,9 @@ use App\Http\Controllers\Api\Catalog\CourseController as CatalogCourseController
 use App\Http\Controllers\Api\CurrentTenantController;
 use App\Http\Controllers\Api\Learning\LearnController;
 use App\Http\Controllers\Api\Learning\MyCoursesController;
+use App\Http\Controllers\Api\Learning\RecommendationController;
 use App\Http\Controllers\Api\Learning\ReviewController;
+use App\Http\Controllers\Api\Manage\AiQuestionController;
 use App\Http\Controllers\Api\Manage\CourseController as ManageCourseController;
 use App\Http\Controllers\Api\Manage\LessonController;
 use App\Http\Controllers\Api\Manage\QuestionController;
@@ -63,6 +65,7 @@ Route::middleware('tenant')->group(function () {
             Route::post('/questions/{question}/answer', [LearnController::class, 'answer']);
             Route::get('/review', [ReviewController::class, 'due']);
             Route::get('/mistakes', [ReviewController::class, 'mistakes']);
+            Route::get('/recommendation', RecommendationController::class)->middleware('throttle:ai');
         });
 
         Route::prefix('brand')->group(function () {
@@ -99,6 +102,11 @@ Route::middleware('tenant')->group(function () {
             Route::post('/lessons/{lesson}/questions', [QuestionController::class, 'store']);
             Route::patch('/questions/{question}', [QuestionController::class, 'update']);
             Route::delete('/questions/{question}', [QuestionController::class, 'destroy']);
+
+            Route::post('/lessons/{lesson}/ai-questions', [AiQuestionController::class, 'generate'])->middleware('throttle:ai');
+            Route::get('/ai-generations', [AiQuestionController::class, 'index']);
+            Route::get('/ai-generations/{generation}', [AiQuestionController::class, 'show']);
+            Route::post('/ai-generations/{generation}/review', [AiQuestionController::class, 'review']);
         });
     });
 });

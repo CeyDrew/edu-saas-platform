@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Domain\Identity\Role;
+use App\Domain\Tenancy\TenantContext;
 use App\Models\User;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Model;
@@ -39,6 +40,10 @@ class AppServiceProvider extends ServiceProvider
 
         // The player sends a heartbeat every ~15 seconds.
         RateLimiter::for('progress', fn (Request $request) => Limit::perMinute(30)->by((string) $request->user()?->getAuthIdentifier()));
+
+        // Model calls are expensive: limited per brand, not per user.
+        RateLimiter::for('ai', fn (Request $request) => Limit::perHour((int) config('ai.hourly_limit'))
+            ->by('tenant:'.app(TenantContext::class)->id()));
 
         RateLimiter::for('webhooks', fn (Request $request) => Limit::perMinute(120)->by($request->ip()));
     }
